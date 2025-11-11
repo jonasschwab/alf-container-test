@@ -22,10 +22,10 @@ echo "Using registry: ${registry}"
 build_date="${BUILD_DATE:-$(date --iso-8601)}"
 push_images="${PUSH_IMAGES:-1}"
 
-mapfile -t list < <(grep FROM alf-requirements/*/Dockerfile | cut -f 2 -d ' ')
-for image in "${list[@]}"; do
-    docker pull "$image"
-done
+# mapfile -t list < <(grep FROM alf-requirements/*/Dockerfile | cut -f 2 -d ' ')
+# for image in "${list[@]}"; do
+#     docker pull "$image"
+# done
 
 for name in "${names[@]}"; do
     for directory in "$name"/*; do
