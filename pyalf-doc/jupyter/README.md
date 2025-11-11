@@ -1,0 +1,1 @@
+Jupyter-based image with ALF and pyALF, their prerequisites and packages needed for the pyALF documentation. The entrypoint has been changed to allow CI execution.
