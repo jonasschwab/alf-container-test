@@ -17,6 +17,7 @@ elif [[ -n "${GITHUB_REPOSITORY:-}" ]]; then
 else
     registry="git.physik.uni-wuerzburg.de:25812/alf/alf_docker"
 fi
+echo "Using registry: ${registry}"
 
 build_date="${BUILD_DATE:-$(date --iso-8601)}"
 push_images="${PUSH_IMAGES:-1}"
