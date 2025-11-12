@@ -3,10 +3,11 @@
 set -euo pipefail
 
 names=(
-alf-requirements
-pyalf-requirements
-pyalf-full
-pyalf-doc
+    base-imgs
+    # alf-requirements
+    # pyalf-requirements
+    # pyalf-full
+    # pyalf-doc
 )
 
 if [[ -n "${REGISTRY_URL:-}" ]]; then
@@ -15,17 +16,13 @@ elif [[ -n "${GITHUB_REPOSITORY:-}" ]]; then
     # Default to the GitHub Container Registry for CI runs
     registry="ghcr.io/${GITHUB_REPOSITORY,,}"
 else
-    registry="git.physik.uni-wuerzburg.de:25812/alf/alf_docker"
+    echo "No registry specified, exiting." >&2
+    exit 1
 fi
 echo "Using registry: ${registry}"
 
 build_date="${BUILD_DATE:-$(date --iso-8601)}"
 push_images="${PUSH_IMAGES:-1}"
-
-# mapfile -t list < <(grep FROM alf-requirements/*/Dockerfile | cut -f 2 -d ' ')
-# for image in "${list[@]}"; do
-#     docker pull "$image"
-# done
 
 for name in "${names[@]}"; do
     for directory in "$name"/*; do
