@@ -1,10 +1,6 @@
 name: Build and Push Docker Images
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
   workflow_dispatch:
 
 env:
@@ -38,5 +34,5 @@ jobs:
       - name: Build and push images
         env:
           REGISTRY_URL: ${{ env.REGISTRY_URL }}
-          PUSH_IMAGES: ${{ github.event_name != 'pull_request' && '1' || '0' }}
+          PUSH_IMAGES: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
         run: ./build.sh

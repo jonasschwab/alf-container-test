@@ -12,15 +12,14 @@ names=(
     pyalf-doc
 )
 
+push_images="${PUSH_IMAGES:-1}"
 if [[ -n "${REGISTRY_URL:-}" ]]; then
     registry="${REGISTRY_URL}"
     echo "Using registry: ${registry}"
-    push_images="1"
 elif [[ -n "${GITHUB_REPOSITORY:-}" ]]; then
     # Default to the GitHub Container Registry for CI runs
     registry="ghcr.io/${GITHUB_REPOSITORY,,}"
     echo "Using registry: ${registry}"
-    push_images="1"
 else
     echo "No registry specified, skipping push."
     push_images="0"
