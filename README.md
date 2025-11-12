@@ -11,5 +11,5 @@ This repository hosts the Dockerfiles used to build the ALF container images. Th
 
 ## Local usage
 
-Run `./build.sh` to build and push all images. To point at a different registry, set `REGISTRY_URL` before executing the script. To perform a dry run without pushing, export `PUSH_IMAGES=0`.
+Run `./build.sh` to build all images. To automatically push images, set `REGISTRY_URL` before executing the script.
 

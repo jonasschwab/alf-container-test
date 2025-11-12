@@ -1,4 +1,5 @@
-FROM alf-requirements/trixie:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}alf-requirements/trixie:latest
 
 USER root
 

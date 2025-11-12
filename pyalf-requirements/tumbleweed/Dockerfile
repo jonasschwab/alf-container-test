@@ -1,4 +1,5 @@
-FROM alf-requirements/tumbleweed:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}alf-requirements/tumbleweed:latest
 
 USER root
 

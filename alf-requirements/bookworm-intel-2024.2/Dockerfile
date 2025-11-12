@@ -1,17 +1,9 @@
-FROM git.physik.uni-wuerzburg.de:25812/z03/pdi/debian:bookworm-gxx
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}base-imgs/bookworm
 
-RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
-    gpg \
-    curl \
-    ca-certificates \
-    zlib1g-dev \
-    libaec-dev \
-    sudo \
-    python3 \
-    git \
-    && \
-    curl https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null \
+USER root
+
+RUN curl https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null \
     && \
     echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list \
     && \
@@ -22,14 +14,7 @@ RUN apt-get update && \
     intel-oneapi-mkl-2024.2 \
     intel-oneapi-compiler-dpcpp-cpp-2024.2 \
     intel-oneapi-mpi-devel-2021.14 \
-    procps \
-    # Helper programs for CI tests
-    rdfind \
-    symlinks \
-    && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    useradd -m user && \
-    echo '%user ALL = (ALL) NOPASSWD: ALL' > /etc/sudoers.d/user_nopasswd
+    procps
 
 USER user
 

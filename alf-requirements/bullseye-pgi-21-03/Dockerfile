@@ -1,27 +1,16 @@
-FROM git.physik.uni-wuerzburg.de:25812/z03/pdi/debian:bullseye-minbase
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}base-imgs/bullseye
 
 ARG YEAR=21
 ARG MONTH=3
 ARG MONTH_SUPERFLUOUS=11
 
+USER root
+
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y \
-    curl \
-    gpg \
-    make \
-    cmake \
-    python3 \
-    # For HDF5 compression
-    zlib1g-dev \
-    libaec-dev \
     # Needed by OpenMPI
     openssh-client \
-    # Helper programs for CI tests
-    sudo \
-    rdfind \
-    symlinks \
-    git \
     && \
     curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg && \
     echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | tee /etc/apt/sources.list.d/nvhpc.list && \
@@ -37,8 +26,6 @@ RUN apt-get update && \
     ln -s /opt/nvidia/hpc_sdk/Linux_x86_64/${YEAR}.${MONTH}/comm_libs/openmpi/openmpi-*/bin/mpifort /usr/local/bin/mpifort && \
     ln -s /opt/nvidia/hpc_sdk/Linux_x86_64/${YEAR}.${MONTH}/comm_libs/openmpi/openmpi-*/bin/mpiexec /usr/local/bin/mpiexec && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    useradd -m user && \
-    echo '%user ALL = (ALL) NOPASSWD: ALL' > /etc/sudoers.d/user_nopasswd && \
     echo "alias mpiexec='mpiexec --mca mpi_cuda_support 0'" >> /home/user/.bashrc
 
 ENV ALF_HDF5_DIR="/var/lib/ALF_HDF5"

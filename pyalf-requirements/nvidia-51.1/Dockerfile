@@ -1,4 +1,5 @@
-FROM alf-requirements/nvidia-51.1:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}alf-requirements/nvidia-51.1:latest
 
 USER root
 

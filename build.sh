@@ -2,41 +2,47 @@
 
 set -euo pipefail
 
+build_date="${BUILD_DATE:-$(date --iso-8601)}"
+
 names=(
     base-imgs
-    # alf-requirements
-    # pyalf-requirements
-    # pyalf-full
-    # pyalf-doc
+    alf-requirements
+    pyalf-requirements
+    pyalf-full
+    pyalf-doc
 )
 
 if [[ -n "${REGISTRY_URL:-}" ]]; then
     registry="${REGISTRY_URL}"
+    echo "Using registry: ${registry}"
+    push_images="1"
 elif [[ -n "${GITHUB_REPOSITORY:-}" ]]; then
     # Default to the GitHub Container Registry for CI runs
     registry="ghcr.io/${GITHUB_REPOSITORY,,}"
+    echo "Using registry: ${registry}"
+    push_images="1"
 else
-    echo "No registry specified, exiting." >&2
-    exit 1
+    echo "No registry specified, skipping push."
+    push_images="0"
 fi
-echo "Using registry: ${registry}"
-
-build_date="${BUILD_DATE:-$(date --iso-8601)}"
-push_images="${PUSH_IMAGES:-1}"
 
 for name in "${names[@]}"; do
     for directory in "$name"/*; do
         if [[ -d $directory ]]; then
             echo "====== building ${directory} ======"
-            docker build --pull -t "${directory}:latest" "$directory"
+            build_args=()
+            if [[ -n "${registry:-}" ]]; then
+                build_args+=(--pull --build-arg "REGISTRY_PREFIX=${registry}")
+            fi
+            docker build "${build_args[@]}" -t "${directory}:latest" "$directory"
             docker tag "${directory}:latest" "${directory}:${build_date}"
-            docker tag "${directory}:latest" "${registry}/${directory}:${build_date}"
-            docker tag "${directory}:latest" "${registry}/${directory}:latest"
             if [[ "${push_images}" == "1" ]]; then
+                docker tag "${directory}:latest" "${registry}/${directory}:${build_date}"
+                docker tag "${directory}:latest" "${registry}/${directory}:latest"
                 docker push "${registry}/${directory}:${build_date}"
                 docker push "${registry}/${directory}:latest"
             else
-                echo "Skipping push for ${registry}/${directory}"
+                echo "Skipping push for ${directory}"
             fi
         fi
     done

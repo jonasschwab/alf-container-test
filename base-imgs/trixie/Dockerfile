@@ -18,6 +18,7 @@ RUN apt-get update --yes && \
     symlinks \
     git \
     ca-certificates \
+    gpg \
     && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     useradd -m user && \

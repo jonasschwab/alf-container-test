@@ -1,4 +1,5 @@
-FROM alf-requirements/bullseye-intel:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}alf-requirements/bullseye-intel:latest
 
 USER root
 

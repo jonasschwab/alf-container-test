@@ -1,4 +1,5 @@
-FROM alf-requirements/archlinux:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}alf-requirements/archlinux:latest
 
 USER root
 

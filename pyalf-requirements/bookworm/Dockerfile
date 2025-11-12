@@ -1,4 +1,5 @@
-FROM alf-requirements/bookworm:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}alf-requirements/bookworm:latest
 
 USER root
 

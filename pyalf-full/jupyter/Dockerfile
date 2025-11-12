@@ -1,4 +1,5 @@
-FROM pyalf-requirements/jupyter:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}pyalf-requirements/jupyter:latest
 
 USER root
 RUN mkdir /var/lib/ALF && \

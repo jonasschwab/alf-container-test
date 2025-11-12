@@ -1,4 +1,5 @@
-FROM pyalf-full/jupyter:latest
+ARG REGISTRY_PREFIX=""
+FROM ${REGISTRY_PREFIX}pyalf-full/jupyter:latest
 
 # Install Python 3 packages needed for documentation
 # RUN mamba install --quiet --yes \
