@@ -32,7 +32,7 @@ for name in "${names[@]}"; do
             echo "====== building ${directory} ======"
             build_args=()
             if [[ -n "${registry:-}" ]]; then
-                build_args+=(--pull --build-arg "REGISTRY_PREFIX=${registry}")
+                build_args+=(--pull --build-arg "REGISTRY_PREFIX=${registry}/")
             fi
             docker build "${build_args[@]}" -t "${directory}:latest" "$directory"
             docker tag "${directory}:latest" "${directory}:${build_date}"
